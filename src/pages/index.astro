@@ -1,0 +1,367 @@
+---
+import BoltIcon from "../components/BoltIcon.astro";
+import ReactIcon from "../components/ReactIcon.astro";
+import VueIcon from "../components/VueIcon.astro";
+import EnvelopeIcon from "../components/EnvelopeIcon.astro";
+import Layout from "../layouts/Layout.astro";
+import MapPinIcon from "../components/MapPinIcon.astro";
+import LaravelIcon from "../components/LaravelIcon.astro";
+import PhoneIcon from "../components/PhoneIcon.astro";
+import DotNetIcon from "../components/DotNetIcon.astro";
+import AstroIcon from "../components/AstroIcon.astro";
+import TailwindIcon from "../components/TailwindIcon.astro";
+import SkillPill from "../components/SkillPill.astro";
+import EducationItem from "../components/EducationItem.astro";
+import ExperienceItem from "../components/ExperienceItem.astro";
+import RunningFootIcon from "../components/RunningFootIcon.astro";
+import CameraIcon from "../components/CameraIcon.astro";
+import ConsoleIcon from "../components/ConsoleIcon.astro";
+import DiscoBallIcon from "../components/DiscoBallIcon.astro";
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+    <main>
+        <section class="container max-w-7xl mx-auto">
+            <div
+                class="px-4 lg:px-24 pt-12 pb-8 grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
+                <div class="space-y-6">
+                    <h1 class="text-[5.5rem] leading-[1] font-display">
+                        Hello,<br /> I'm <small class="text-[6px]">a.k.a.</small
+                        >Reis!
+                    </h1>
+                    <p class="text-lg">
+                        I'm a software engineer and a web developer. I love to
+                        build things for the web and I'm always looking for new
+                        challenges.
+                    </p>
+
+                    <div
+                        class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
+                    >
+                        <div
+                            class="lg:w-fit flex items-center justify-center text-secondary-900 px-6 py-3 rounded-full bg-primary-300"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="size-4 lg:size-5 mr-1 lg:mr-4"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+
+                            <a
+                                class="text-sm lg:text-base"
+                                href="https://www.linkedin.com/in/mateuskonige/"
+                                target="_blank"
+                                >/<b>mateuskonige</b>
+                            </a>
+                        </div>
+
+                        <a
+                            href={"/Resume_Mateus_2025_EN.pdf"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-sm lg:text-base text-center px-6 py-3 rounded-full font-medium border border-gray-200"
+                        >
+                            Download CV
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <div
+                        class="w-[100%] lg:w-72 h-[450px] lg:h-96 bg-[url('/picture.jpeg')] bg-cover bg-bottom shadow-xl relative z-10"
+                    >
+                        <span
+                            class="absolute text-xs lg:text-base top-[10%] md:top-[6%] -left-2 lg:-left-12 rounded-full font-medium bg-primary-300 px-6 py-3 shadow-xl"
+                            >May 11th, 1998</span
+                        >
+                        <span
+                            class="absolute text-xs lg:text-base top-[65%] lg:top-[45%] -right-2 lg:-right-12 rounded-full font-medium bg-primary-300 px-6 py-3 shadow-xl"
+                            >Brazilian</span
+                        >
+                        <div
+                            class="bg-slate-900 absolute bottom-0 w-full text-slate-50 pl-12 py-3"
+                        >
+                            <span class="font-display text-2xl">Contact</span>
+
+                            <div class="text-xs pt-1">
+                                <div class="flex items-center space-x-0.5">
+                                    <MapPinIcon />
+
+                                    <p>Minas Gerais, Brazil</p>
+                                </div>
+                                <div class="flex items-center space-x-0.5">
+                                    <EnvelopeIcon />
+
+                                    <p>
+                                        <a href="mailto:mateuskonige@gmail.com"
+                                            >mateuskonige@gmail.com</a
+                                        >
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-0.5">
+                                    <PhoneIcon />
+                                    <p>
+                                        <a href="tel:+5538998065101"
+                                            >+55 38 9 9806 5101</a
+                                        >
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-secondary-900 text-slate-50">
+            <div class="max-w-7xl mx-auto lg:px-24 pt-5 lg:pt-12 pb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div
+                        class="p-4 lg:p-0 relative h-fit mb-8 order-last md:order-first"
+                    >
+                        <h2
+                            class="ml-8 text-4xl font-display text-primary-300 pb-8"
+                        >
+                            Education
+                        </h2>
+
+                        <div class="space-y-4">
+                            <EducationItem
+                                date="2019-2024"
+                                location="University of Montes Claros"
+                                course="Information Systems"
+                                last={false}
+                            />
+                            <EducationItem
+                                date="2021-2021"
+                                location="EspecializaTI"
+                                course="Laravel Certification"
+                                last={false}
+                            />
+                            <EducationItem
+                                date="2013-2015"
+                                location="Dilma Quadros"
+                                course="High School"
+                                last={true}
+                            />
+                        </div>
+
+                        <div
+                            class="hover:shadow-primary-300 absolute top-[calc(100%+2rem)] left-0 w-full bg-primary-300 py-8 px-4 shadow-lg"
+                        >
+                            <h2
+                                class="ml-8 text-4xl font-display text-secondary-900 pb-8"
+                            >
+                                Experience
+                            </h2>
+
+                            <div class="space-y-4 mb-8">
+                                <ExperienceItem
+                                    date="2024-2024"
+                                    location="COM3 Systems Engineering"
+                                    course="Mid-Level Full Stack Developer"
+                                    last={false}
+                                />
+                                <ExperienceItem
+                                    date="2021-2023"
+                                    location="Federal University of Minas "
+                                    course="Intern Full Stack Developer"
+                                    last={true}
+                                />
+                            </div>
+
+                            <div>
+                                <div class="flex gap-2 flex-wrap">
+                                    <SkillPill text="Front-end" />
+                                    <SkillPill text="Back-end" />
+                                    <SkillPill text="UI/UX Design" />
+                                    <SkillPill text="Problem-solving" />
+                                    <SkillPill text="Software Analyst" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 lg:p-0">
+                        <div class="relative w-full">
+                            <h2
+                                class="text-center opacity-50 text-[4rem] lg:text-[5.65rem] xl:text-[7.5rem] leading-[1] font-display uppercase text-transparent bg-clip-text stroke"
+                            >
+                                Resume
+                            </h2>
+
+                            <h2
+                                class="absolute opacity-35 right-0 -top-[100%] lg:-top-[95%] xl:-top-[85%] text-[4rem] lg:text-[5.65rem] xl:text-[7.5rem] leading-[1] font-display uppercase text-transparent bg-clip-text stroke"
+                            >
+                                Resume
+                            </h2>
+                            <h2
+                                class="absolute opacity-35 top-[100%] lg:top-[95%] xl:top-[85%] text-[4rem] lg:text-[5.65rem] xl:text-[7.5rem] leading-[1] font-display uppercase text-transparent bg-clip-text stroke"
+                            >
+                                Resume
+                            </h2>
+                        </div>
+
+                        <h2
+                            class="mt-9 lg:mt-12 text-3xl font-display text-primary-300 pb-8"
+                        >
+                            Technical Skills
+                        </h2>
+
+                        <div class="pb-8">
+                            <div>
+                                <p class="font-display text-lg mb-3">
+                                    Coding skills
+                                </p>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <div class="w-fit bg-slate-50 p-2 rounded">
+                                    <ReactIcon />
+                                </div>
+
+                                <div class="w-fit bg-slate-50 p-2 rounded">
+                                    <VueIcon />
+                                </div>
+
+                                <div class="w-fit bg-slate-50 p-2 rounded">
+                                    <LaravelIcon />
+                                </div>
+
+                                <div class="w-fit bg-slate-50 p-2 rounded">
+                                    <DotNetIcon />
+                                </div>
+
+                                <div class="w-fit bg-slate-50 p-2 rounded">
+                                    <TailwindIcon />
+                                </div>
+                                <div class="w-fit bg-slate-50 p-2 rounded">
+                                    <AstroIcon />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex gap-2 flex-wrap">
+                                <SkillPill text="Front-end" />
+                                <SkillPill text="Back-end" />
+                                <SkillPill text="UI/UX Design" />
+                                <SkillPill text="Problem-solving" />
+                                <SkillPill text="Software Analyst" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container max-w-7xl mx-auto">
+            <div
+                class="px-4 lg:px-24 pt-8 lg:pt-12 pb-8 grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
+                <div class="mt-[24rem] md:mt-[13rem] lg:mt-[12rem] xl:mt-36">
+                    <h2
+                        class="ml-8 text-4xl font-display text-secondary-900 pb-8"
+                    >
+                        Activities
+                    </h2>
+
+                    <div class="space-y-4">
+                        <EducationItem
+                            date="2021"
+                            location="My first system deployed"
+                            course="Dionysus"
+                            last={false}
+                        />
+                        <EducationItem
+                            date="2020"
+                            location="My first  UI clone"
+                            course="Netflix"
+                            last={true}
+                        />
+                    </div>
+                </div>
+
+                <div class="">
+                    <h2
+                        class="ml-8 text-4xl font-display text-secondary-900 pb-8"
+                    >
+                        Languages
+                    </h2>
+
+                    <div class="grid grid-cols-2 pb-8 text-secondary-900">
+                        <div>
+                            <p class="font-display text-xl">English</p>
+                            <p class="text-sm">Advanced</p>
+                        </div>
+                        <div>
+                            <p class="font-display text-xl">Portuguese</p>
+                            <p class="text-sm">Native</p>
+                        </div>
+                    </div>
+
+                    <h2
+                        class="ml-8 text-4xl font-display text-secondary-900 pb-8"
+                    >
+                        Hobbies & Interests
+                    </h2>
+
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"
+                    >
+                        <div
+                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                        >
+                            <div
+                                class="bg-primary-300 size-16 flex items-center justify-center"
+                            >
+                                <RunningFootIcon />
+                            </div>
+                            <p class="text-sm lg:pt-2">Running/Gym</p>
+                        </div>
+                        <div
+                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                        >
+                            <div
+                                class="bg-primary-300 size-16 flex items-center justify-center"
+                            >
+                                <CameraIcon />
+                            </div>
+                            <p class="text-sm lg:pt-2">Photography</p>
+                        </div>
+                        <div
+                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                        >
+                            <div
+                                class="bg-primary-300 size-16 flex items-center justify-center"
+                            >
+                                <ConsoleIcon />
+                            </div>
+                            <p class="text-sm lg:pt-2">Play games</p>
+                        </div>
+                        <div
+                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                        >
+                            <div
+                                class="bg-primary-300 size-16 flex items-center justify-center"
+                            >
+                                <DiscoBallIcon />
+                            </div>
+                            <p class="text-sm lg:pt-2">DJing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>

@@ -1,0 +1,125 @@
+---
+import AstroIcon from "../components/AstroIcon.astro";
+import DotNetIcon from "../components/DotNetIcon.astro";
+import SkillPill from "../components/SkillPill.astro";
+import TailwindIcon from "../components/TailwindIcon.astro";
+import WorkItem from "../components/WorkItem.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <section class="bg-secondary-900 text-slate-50">
+        <div class="max-w-7xl mx-auto lg:px-24 pt-5 lg:pt-12 pb-8">
+            <div class="">
+                <div
+                    class="p-4 lg:p-0 relative h-fit mb-8 order-last md:order-first"
+                >
+                    <h2
+                        class="ml-8 text-4xl font-display text-primary-300 pb-8"
+                    >
+                        Work
+                    </h2>
+
+                    <div class="space-y-6">
+                        <WorkItem
+                            title="Myrmidons"
+                            description="A presentation site for a software development company."
+                            skills={["Nuxt", "TailwindCSS", "i18n"]}
+                        />
+
+                        <WorkItem
+                            title="Dionysus 2.0"
+                            description="Web management system for buffets."
+                            skills={[
+                                "Laravel",
+                                "Vue",
+                                "Vuetify",
+                                "Multi-tenancy",
+                                "PostgreSQL",
+                            ]}
+                        />
+                        <WorkItem
+                            title="Support System"
+                            description="Ticket management system, among other modules."
+                            skills={[
+                                "Laravel",
+                                "React",
+                                "InertiaJS",
+                                "React Native",
+                                "Restful API",
+                                "MySQL",
+                            ]}
+                        />
+
+                        <WorkItem
+                            title="Alert Guará"
+                            description="Smoke detector device tracking system."
+                            skills={[
+                                ".NET",
+                                "React",
+                                "Leaflet",
+                                "TailwindCSS",
+                                "PWA",
+                                "Restful API",
+                                "MySQL",
+                            ]}
+                        />
+                        <WorkItem
+                            title="Maxitree Fleet"
+                            description="Fleet tracking system."
+                            skills={[
+                                ".NET",
+                                "React",
+                                "Leaflet",
+                                "TailwindCSS",
+                                "Restful API",
+                                "MySQL",
+                            ]}
+                        />
+
+                        <WorkItem
+                            title="Aperam Supervisory"
+                            description="Coal burning analysis and monitoring system."
+                            skills={[
+                                ".NET",
+                                "React",
+                                "Redux",
+                                "TailwindCSS",
+                                "PWA",
+                                "Restful API",
+                                "MySQL",
+                            ]}
+                        />
+                        <WorkItem
+                            title="Aperam Skills"
+                            description="Course platform."
+                            skills={[
+                                "Laravel",
+                                "React",
+                                "InertiaJS",
+                                "Material Design",
+                                "TailwindCSS",
+                                "PWA",
+                                "MySQL",
+                                "Panda Video",
+                            ]}
+                        />
+                        <WorkItem
+                            title="Plantar Supervisory"
+                            description="Coal burning analysis and monitoring system."
+                            skills={[
+                                ".NET",
+                                "React",
+                                "Redux",
+                                "TailwindCSS",
+                                "PWA",
+                                "Restful API",
+                                "MySQL",
+                            ]}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

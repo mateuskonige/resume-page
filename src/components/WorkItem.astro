@@ -1,0 +1,23 @@
+---
+import SkillPill from "./SkillPill.astro";
+
+const { title, description, skills } = Astro.props;
+---
+
+<div class="w-full bg-primary-300 p-8 shadow-xl">
+    <div class="flex items-center">
+        <div>
+            <h2 class="text-4xl font-display text-secondary-900 pb-8">
+                {title}
+            </h2>
+            <p class="text-secondary-900 pb-8">
+                {description}
+            </p>
+            <div>
+                <div class="flex gap-2 flex-wrap">
+                    {skills.map((skill) => <SkillPill text={skill} />)}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
