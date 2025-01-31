@@ -9,7 +9,6 @@
         "astro": "astro"
     },
     "dependencies": {
-        "@astrojs/tailwind": "^5.1.5",
         "@astrojs/ts-plugin": "^1.10.4",
         "@mdi/font": "^7.4.47",
         "@tailwindcss/vite": "^4.0.2",
