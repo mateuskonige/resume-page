@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+    /* colors */
+    --color-primary-300: #25fbad;
+    --color-secondary-900: #34314e;
+    /* fonts */
+    --font-display: "Aclonica", "sans-serif"; 
+    --font-sans: "Montserrat", "sans-serif";
+  }
+
+@layer utilities {
+    .stroke {
+        -webkit-text-stroke: 2px #25fbad;
+    }
+}
