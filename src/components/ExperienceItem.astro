@@ -1,7 +1,14 @@
 ---
-import BoltIcon from "./BoltIcon.astro";
+import BoltIcon from "@/components/icons/BoltIcon.astro";
 
-const { date, location, course, last } = Astro.props;
+interface Props {
+    date: string;
+    location: string;
+    course: string;
+    isLast: boolean;
+}
+
+const { date, location, course, isLast } = Astro.props;
 ---
 
 <div class="grid grid-cols-5 space-x-6 text-secondary-900">
@@ -9,7 +16,7 @@ const { date, location, course, last } = Astro.props;
         <div class="relative">
             <BoltIcon fill="fill-secondary-900" />
             {
-                !last && (
+                !isLast && (
                     <div class="absolute top-full left-1/2 -translate-x-1/2 w-1 h-9 border-l border-secondary-900 opacity-50" />
                 )
             }

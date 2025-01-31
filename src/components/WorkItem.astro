@@ -1,6 +1,12 @@
 ---
 import SkillPill from "./SkillPill.astro";
 
+interface Props {
+    title: string;
+    description: string;
+    skills: string[];
+}
+
 const { title, description, skills } = Astro.props;
 ---
 

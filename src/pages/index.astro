@@ -1,26 +1,22 @@
 ---
-import BoltIcon from "../components/BoltIcon.astro";
-import ReactIcon from "../components/ReactIcon.astro";
-import VueIcon from "../components/VueIcon.astro";
-import EnvelopeIcon from "../components/EnvelopeIcon.astro";
-import Layout from "../layouts/Layout.astro";
-import MapPinIcon from "../components/MapPinIcon.astro";
-import LaravelIcon from "../components/LaravelIcon.astro";
-import PhoneIcon from "../components/PhoneIcon.astro";
-import DotNetIcon from "../components/DotNetIcon.astro";
-import AstroIcon from "../components/AstroIcon.astro";
-import TailwindIcon from "../components/TailwindIcon.astro";
-import SkillPill from "../components/SkillPill.astro";
-import EducationItem from "../components/EducationItem.astro";
-import ExperienceItem from "../components/ExperienceItem.astro";
-import RunningFootIcon from "../components/RunningFootIcon.astro";
-import CameraIcon from "../components/CameraIcon.astro";
-import ConsoleIcon from "../components/ConsoleIcon.astro";
-import DiscoBallIcon from "../components/DiscoBallIcon.astro";
-import CodingSkillsItem from "../components/CodingSkillsItem.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import EnvelopeIcon from "@/components/icons/EnvelopeIcon.astro";
+import ReactIcon from "@/components/icons/ReactIcon.astro";
+import Layout from "@/layouts/Layout.astro";
+import MapPinIcon from "@/components/icons/MapPinIcon.astro";
+import LaravelIcon from "@/components/icons/LaravelIcon.astro";
+import PhoneIcon from "@/components/icons/PhoneIcon.astro";
+import DotNetIcon from "@/components/icons/DotNetIcon.astro";
+import AstroIcon from "@/components/icons/AstroIcon.astro";
+import TailwindIcon from "@/components/icons/TailwindIcon.astro";
+import SkillPill from "@/components/SkillPill.astro";
+import EducationItem from "@/components/EducationItem.astro";
+import ExperienceItem from "@/components/ExperienceItem.astro";
+import RunningFootIcon from "@/components/icons/RunningFootIcon.astro";
+import CameraIcon from "@/components/icons/CameraIcon.astro";
+import ConsoleIcon from "@/components/icons/ConsoleIcon.astro";
+import DiscoBallIcon from "@/components/icons/DiscoBallIcon.astro";
+import CodingSkillsItem from "@/components/CodingSkillsItem.astro";
+import VueIcon from "@/components/icons/VueIcon.astro";
 ---
 
 <Layout>
@@ -43,8 +39,10 @@ import CodingSkillsItem from "../components/CodingSkillsItem.astro";
                     <div
                         class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
                     >
-                        <div
-                            class="lg:w-fit flex items-center justify-center text-secondary-900 px-6 py-3 rounded-full bg-primary-300"
+                        <a
+                            class="lg:w-fit flex items-center justify-center text-secondary-900 px-6 py-3 rounded-full bg-primary-300 hover:ring ring-secondary-900 transition-all ease-in-out"
+                            href="https://github.com/mateuskonige/"
+                            target="_blank"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -58,19 +56,16 @@ import CodingSkillsItem from "../components/CodingSkillsItem.astro";
                                     clip-rule="evenodd"></path>
                             </svg>
 
-                            <a
-                                class="text-sm lg:text-base"
-                                href="https://github.com/mateuskonige/"
-                                target="_blank"
-                                >/<b>mateuskonige</b>
-                            </a>
-                        </div>
+                            <p class="text-sm lg:text-base">
+                                /<b>mateuskonige</b>
+                            </p>
+                        </a>
 
                         <a
                             href={"/Resume_Mateus_v1.pdf"}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="text-sm lg:text-base text-center px-6 py-3 rounded-full font-medium border border-gray-200"
+                            class="text-sm lg:text-base text-center px-6 py-3 rounded-full font-medium border border-gray-200 hover:ring ring-primary-300 transition-all ease-in-out"
                         >
                             Download CV
                         </a>
@@ -138,22 +133,22 @@ import CodingSkillsItem from "../components/CodingSkillsItem.astro";
 
                         <div class="space-y-4">
                             <EducationItem
-                                date="2019-2024"
+                                date="2019-2023"
                                 location="University of Montes Claros"
                                 course="Information Systems"
-                                last={false}
+                                isLast={false}
                             />
                             <EducationItem
                                 date="2021-2021"
                                 location="EspecializaTI"
                                 course="Laravel Certification"
-                                last={false}
+                                isLast={false}
                             />
                             <EducationItem
                                 date="2013-2015"
                                 location="Dilma Quadros"
                                 course="High School"
-                                last={true}
+                                isLast={true}
                             />
                         </div>
 
@@ -171,13 +166,13 @@ import CodingSkillsItem from "../components/CodingSkillsItem.astro";
                                     date="2024-2024"
                                     location="COM3 Systems Engineering"
                                     course="Junior Full Stack Developer"
-                                    last={false}
+                                    isLast={false}
                                 />
                                 <ExperienceItem
                                     date="2021-2023"
                                     location="State University of Montes Claros"
                                     course="Intern Full Stack Developer"
-                                    last={true}
+                                    isLast={true}
                                 />
                             </div>
 
@@ -266,7 +261,7 @@ import CodingSkillsItem from "../components/CodingSkillsItem.astro";
 
         <section class="container max-w-7xl mx-auto">
             <div
-                class="px-4 lg:px-24 pt-8 lg:pt-12 pb-8 grid grid-cols-1 md:grid-cols-2 gap-6"
+                class="px-4 lg:px-24 pt-8 lg:pt-12 pb-8 lg:pb-12 grid grid-cols-1 md:grid-cols-2 gap-6"
             >
                 <div
                     class="mt-[24rem] min-[380px]:mt-[19.5rem] sm:mt-[17rem] md:mt-[13rem] lg:mt-[12rem] xl:mt-36"
@@ -282,13 +277,13 @@ import CodingSkillsItem from "../components/CodingSkillsItem.astro";
                             date="2021"
                             location="My first system deployed"
                             course="Dionysus"
-                            last={false}
+                            isLast={false}
                         />
                         <EducationItem
                             date="2020"
-                            location="My first  UI clone"
+                            location="My first UI clone. :)"
                             course="Netflix"
-                            last={true}
+                            isLast={true}
                         />
                     </div>
                 </div>
