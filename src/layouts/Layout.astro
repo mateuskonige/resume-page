@@ -1,6 +1,8 @@
 ---
-import "../styles/global.css";
 import BoltIcon from "@/components/icons/BoltIcon.astro";
+import Galaxy from "@/components/Galaxy.astro";
+import GlassSurface from "@/components/GlassSurface.astro";
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -15,7 +17,7 @@ import BoltIcon from "@/components/icons/BoltIcon.astro";
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net" />
         <link
-            href="https://fonts.bunny.net/css?family=Montserrat:400,500,600&display=swap"
+            href="https://fonts.bunny.net/css?family=Inter:400,500,600&display=swap"
             rel="stylesheet"
         />
         <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -25,23 +27,45 @@ import BoltIcon from "@/components/icons/BoltIcon.astro";
         />
     </head>
 
-    <body class="font-sans bg-emerald-50">
-        <div class="">
-            <nav class="shadow-sm p-6">
+    <body class="font-sans bg-neutral-950">
+        <Galaxy
+            density={5}
+            hueShift={100}
+            glowIntensity={0.1}
+            speed={0.1}
+            rotationSpeed={0.1}
+            mouseRepulsion={false}
+            class="fixed inset-0 z-0 pointer-events-none"
+        />
+        <div class="relative z-10">
+            <nav class="sticky top-2 z-50 p-6 max-w-6xl mx-auto">
+                <GlassSurface
+                    glow={0.1}
+                    borderRadius={35}
+                    borderWidth={0.07}
+                    brightness={75}
+                    opacity={1}
+                    blur={7}
+                    displace={2}
+                    backgroundOpacity={0.1}
+                    saturation={0.5}
+                    distortionScale={-50}
+                />
                 <div
-                    class="container max-w-7xl mx-auto flex items-center justify-between"
+                    class="container flex items-center justify-between relative"
                 >
                     <a href="/" class="flex items-center">
                         <BoltIcon fill="fill-primary-300" />
 
-                        <span class="font-bold text-2xl font-display"
+                        <span
+                            class="font-bold text-2xl font-display text-neutral-50"
                             >Mateus Reis</span
                         >
                     </a>
                     <div class="hidden sm:block space-x-3">
                         <a
                             href="/about"
-                            class="rounded-full font-medium border border-gray-200 px-3 py-2 hover:ring-2 ring-primary-300 transition-all ease-in-out"
+                            class="rounded-full font-medium border border-neutral-800 text-neutral-50 px-3 py-2 hover:ring-2 ring-primary-300 transition-all ease-in-out"
                             >Work</a
                         >
 
@@ -66,26 +90,43 @@ import BoltIcon from "@/components/icons/BoltIcon.astro";
 
             <slot />
 
-            <footer class="p-6 bg-secondary-900 text-slate-50">
+            <footer class="relative p-6 text-slate-50">
                 <div
-                    class="container max-w-7xl mx-auto flex items-center justify-between"
+                    class="container max-w-7xl mx-auto flex items-center justify-between relative"
                 >
                     <div class="flex items-center">
                         <BoltIcon fill="fill-primary-300" />
                     </div>
-                    <div >
+                    <div>
                         <p class="text-right">
                             Made with ❤️ by <span class="font-display"
                                 >Mateus Reis</span
                             >
                         </p>
-                        <p class="text-[9px] text-right">
+                        <p class="text-[9px] text-right text-neutral-500">
                             Design by <span class="font-display">Hannnb</span>
                         </p>
                     </div>
                 </div>
             </footer>
         </div>
+
+        <script>
+            import Lenis from "lenis";
+
+            const lenis = new Lenis({
+                duration: 1,
+                easing: (t) => 1 - Math.pow(1 - t, 3),
+                smoothWheel: true,
+            });
+
+            function raf(time: number) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+
+            requestAnimationFrame(raf);
+        </script>
     </body>
 </html>
 

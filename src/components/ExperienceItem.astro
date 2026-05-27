@@ -11,13 +11,13 @@ interface Props {
 const { date, location, course, isLast } = Astro.props;
 ---
 
-<div class="grid grid-cols-5 space-x-6 text-secondary-900">
+<div class="grid grid-cols-5 space-x-6 text-white">
     <div class="flex items-center col-span-2">
         <div class="relative">
-            <BoltIcon fill="fill-secondary-900" />
+            <BoltIcon fill="fill-primary-300" />
             {
                 !isLast && (
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-1 h-9 border-l border-secondary-900 opacity-50" />
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-1 h-9 border-l border-primary-300 opacity-50" />
                 )
             }
         </div>
@@ -27,7 +27,7 @@ const { date, location, course, isLast } = Astro.props;
     </div>
     <div class="col-span-3">
         <p class="text-sm lg:text-lg truncate">{location}</p>
-        <p class="text-xs">
+        <p class="text-xs text-gray-400">
             {course}
         </p>
     </div>

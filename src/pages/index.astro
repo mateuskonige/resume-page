@@ -1,22 +1,24 @@
 ---
-import EnvelopeIcon from "@/components/icons/EnvelopeIcon.astro";
-import ReactIcon from "@/components/icons/ReactIcon.astro";
-import Layout from "@/layouts/Layout.astro";
-import MapPinIcon from "@/components/icons/MapPinIcon.astro";
-import LaravelIcon from "@/components/icons/LaravelIcon.astro";
-import PhoneIcon from "@/components/icons/PhoneIcon.astro";
-import DotNetIcon from "@/components/icons/DotNetIcon.astro";
-import AstroIcon from "@/components/icons/AstroIcon.astro";
-import TailwindIcon from "@/components/icons/TailwindIcon.astro";
-import SkillPill from "@/components/SkillPill.astro";
+import CodingSkillsItem from "@/components/CodingSkillsItem.astro";
 import EducationItem from "@/components/EducationItem.astro";
 import ExperienceItem from "@/components/ExperienceItem.astro";
-import RunningFootIcon from "@/components/icons/RunningFootIcon.astro";
+import AstroIcon from "@/components/icons/AstroIcon.astro";
 import CameraIcon from "@/components/icons/CameraIcon.astro";
 import ConsoleIcon from "@/components/icons/ConsoleIcon.astro";
 import DiscoBallIcon from "@/components/icons/DiscoBallIcon.astro";
-import CodingSkillsItem from "@/components/CodingSkillsItem.astro";
+import DotNetIcon from "@/components/icons/DotNetIcon.astro";
+import EnvelopeIcon from "@/components/icons/EnvelopeIcon.astro";
+import LaravelIcon from "@/components/icons/LaravelIcon.astro";
+import MapPinIcon from "@/components/icons/MapPinIcon.astro";
+import ReactIcon from "@/components/icons/ReactIcon.astro";
+import RunningFootIcon from "@/components/icons/RunningFootIcon.astro";
+import TailwindIcon from "@/components/icons/TailwindIcon.astro";
 import VueIcon from "@/components/icons/VueIcon.astro";
+import SkillPill from "@/components/SkillPill.astro";
+import GlassSurface from "@/components/GlassSurface.astro";
+import Layout from "@/layouts/Layout.astro";
+import GitHubIcon from "@/components/icons/GitHubIcon.astro";
+import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
 ---
 
 <Layout>
@@ -26,11 +28,14 @@ import VueIcon from "@/components/icons/VueIcon.astro";
                 class="px-4 lg:px-24 pt-12 pb-8 grid grid-cols-1 md:grid-cols-2 gap-6"
             >
                 <div class="space-y-6">
-                    <h1 class="text-[5.5rem] leading-[1] font-display">
+                    <h1
+                        class="text-[5.5rem] leading-[1] font-display text-neutral-50"
+                    >
                         Hello,<br /> I'm <small class="text-[6px]">a.k.a.</small
-                        >Reis!
+                        >
+                        <span class="text-primary-300">Reis</span>
                     </h1>
-                    <p class="text-lg">
+                    <p class="text-lg text-neutral-300">
                         I'm a software engineer and a web developer. I love to
                         build things for the web and I'm always looking for new
                         challenges.
@@ -40,77 +45,60 @@ import VueIcon from "@/components/icons/VueIcon.astro";
                         class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
                     >
                         <a
-                            class="lg:w-fit flex items-center justify-center text-secondary-900 px-6 py-3 rounded-full bg-primary-300 hover:ring-2 ring-secondary-900 transition-all ease-in-out"
+                            class="lg:w-fit flex items-center justify-center text-white px-6 py-3 bg-primary-300/10 border border-primary-300/20 shadow-lg shadow-primary-300/10 hover:ring-2 ring-primary-300 transition-all ease-in-out"
                             href="https://github.com/mateuskonige/"
                             target="_blank"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="size-4 lg:size-5 mr-1 lg:mr-4"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <GitHubIcon />
 
-                            <p class="text-sm lg:text-base">
+                            <p
+                                class="text-sm ml-2 lg:text-base text-primary-300"
+                            >
                                 /<b>mateuskonige</b>
                             </p>
-                        </a>
-
-                        <a
-                            href={"/Resume_Mateus_v1.pdf"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="text-sm lg:text-base text-center px-6 py-3 rounded-full font-medium border border-gray-200 hover:ring-2 ring-primary-300 transition-all ease-in-out"
-                        >
-                            Download CV
                         </a>
                     </div>
                 </div>
 
-                <div class="flex justify-center">
-                    <div
-                        class="w-[100%] lg:w-72 h-[450px] lg:h-96 bg-[url('/picture.webp')] bg-cover bg-bottom shadow-xl relative z-10"
-                    >
-                        <span
-                            class="absolute text-xs lg:text-base top-[10%] md:top-[6%] -left-2 lg:-left-12 rounded-full font-medium bg-primary-300 px-6 py-3 shadow-xl"
-                            >May 11th, 1998</span
-                        >
-                        <span
-                            class="absolute text-xs lg:text-base top-[65%] lg:top-[45%] -right-2 lg:-right-12 rounded-full font-medium bg-primary-300 px-6 py-3 shadow-xl"
-                            >Brazilian</span
-                        >
+                <div class="relative">
+                    <img
+                        id="rocky-egg"
+                        class="w-44 h-44 absolute bottom-15 right-14 -z-10 pointer-events-none"
+                        src="/rocky.png"
+                        alt="Amaze amaze amaze!"
+                    />
+                    <div class="flex justify-center">
                         <div
-                            class="bg-slate-900 absolute bottom-0 w-full text-slate-50 pl-12 py-3"
+                            id="picture-card"
+                            class="border border-primary-300/30 shadow-primary-300/30 w-full lg:w-96 h-[450px] lg:h-96 bg-[url('/picture.webp')] bg-cover bg-top shadow-2xl relative z-10 isolate"
+                            style="background-size: 127%; background-position: top 0% left 42%;"
                         >
-                            <span class="font-display text-2xl">Contact</span>
+                            <span
+                                class="absolute text-xs lg:text-base top-[10%] md:top-[6%] -right-2 lg:-right-8 rounded-xl font-medium bg-primary-300/10 border border-primary-300/30 px-2 py-1 shadow-xl"
+                            >
+                                <BrazilFlagIcon />
+                            </span>
+                            <div
+                                class="bg-neutral-900/50 backdrop-blur-md absolute bottom-0 w-full text-neutral-50 pl-12 py-3"
+                            >
+                                <span class="font-display text-2xl"
+                                    >Contact</span
+                                >
 
-                            <div class="text-xs pt-1">
-                                <div class="flex items-center space-x-0.5">
-                                    <MapPinIcon />
-
-                                    <p>Minas Gerais, Brazil</p>
-                                </div>
-                                <div class="flex items-center space-x-0.5">
-                                    <EnvelopeIcon />
-
-                                    <p>
-                                        <a href="mailto:mateuskonige@gmail.com"
-                                            >mateuskonige@gmail.com</a
-                                        >
-                                    </p>
-                                </div>
-                                <div class="flex items-center space-x-0.5">
-                                    <PhoneIcon />
-                                    <p>
-                                        <a href="tel:+5538998065101"
-                                            >+55 38 9 9806 5101</a
-                                        >
-                                    </p>
+                                <div class="text-xs py-1">
+                                    <div class="flex items-center space-x-0.5">
+                                        <MapPinIcon />
+                                        <p>Minas Gerais, Brazil</p>
+                                    </div>
+                                    <div class="flex items-center space-x-0.5">
+                                        <EnvelopeIcon />
+                                        <p>
+                                            <a
+                                                href="mailto:mateuskonige@gmail.com"
+                                                >mateuskonige@gmail.com</a
+                                            >
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -119,15 +107,13 @@ import VueIcon from "@/components/icons/VueIcon.astro";
             </div>
         </section>
 
-        <section class="bg-secondary-900 text-slate-50">
+        <section class="text-neutral-50">
             <div class="max-w-7xl mx-auto lg:px-24 pt-5 lg:pt-12 pb-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div
                         class="p-4 lg:p-0 relative h-fit mb-8 order-last md:order-first"
                     >
-                        <h2
-                            class="ml-8 text-4xl font-display text-primary-300 pb-8"
-                        >
+                        <h2 class="text-4xl font-display text-primary-300 pb-8">
                             Education
                         </h2>
 
@@ -153,36 +139,38 @@ import VueIcon from "@/components/icons/VueIcon.astro";
                         </div>
 
                         <div
-                            class="absolute top-[calc(100%+2rem)] left-0 w-full bg-primary-300 py-8 px-4 shadow-lg"
+                            class="absolute top-[calc(100%+2rem)] left-0 w-full rounded-lg overflow-hidden py-8 px-4 shadow-lg"
                         >
-                            <h2
-                                class="ml-8 text-4xl font-display text-secondary-900 pb-8"
-                            >
-                                Experience
-                            </h2>
+                            <div class="relative">
+                                <h2
+                                    class="ml-8 text-4xl font-display text-primary-300 pb-8"
+                                >
+                                    Experience
+                                </h2>
 
-                            <div class="space-y-4 mb-8">
-                                <ExperienceItem
-                                    date="2024-2024"
-                                    location="COM3 Systems Engineering"
-                                    course="Junior Full Stack Developer"
-                                    isLast={false}
-                                />
-                                <ExperienceItem
-                                    date="2021-2023"
-                                    location="State University of Montes Claros"
-                                    course="Intern Full Stack Developer"
-                                    isLast={true}
-                                />
-                            </div>
+                                <div class="space-y-4 mb-8">
+                                    <ExperienceItem
+                                        date="2024-2026"
+                                        location="COM3 Systems Engineering"
+                                        course="IT Business Analyst"
+                                        isLast={false}
+                                    />
+                                    <ExperienceItem
+                                        date="2021-2023"
+                                        location="State University of Montes Claros"
+                                        course="Intern Full Stack Developer"
+                                        isLast={true}
+                                    />
+                                </div>
 
-                            <div>
-                                <div class="flex gap-2 flex-wrap">
-                                    <SkillPill text="Front-end" />
-                                    <SkillPill text="Back-end" />
-                                    <SkillPill text="UI/UX Design" />
-                                    <SkillPill text="Problem-solving" />
-                                    <SkillPill text="Software Analyst" />
+                                <div>
+                                    <div class="flex gap-2 flex-wrap">
+                                        <SkillPill text="Front-end" />
+                                        <SkillPill text="Back-end" />
+                                        <SkillPill text="UI/UX Design" />
+                                        <SkillPill text="Problem-solving" />
+                                        <SkillPill text="Software Analyst" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -266,9 +254,7 @@ import VueIcon from "@/components/icons/VueIcon.astro";
                 <div
                     class="mt-[24rem] min-[380px]:mt-[19.5rem] sm:mt-[17rem] md:mt-[13rem] lg:mt-[12rem] xl:mt-36"
                 >
-                    <h2
-                        class="ml-8 text-4xl font-display text-secondary-900 pb-8"
-                    >
+                    <h2 class="text-4xl font-display text-primary-300 pb-8">
                         Activities
                     </h2>
 
@@ -289,26 +275,26 @@ import VueIcon from "@/components/icons/VueIcon.astro";
                 </div>
 
                 <div class="">
-                    <h2
-                        class="ml-8 text-4xl font-display text-secondary-900 pb-8"
-                    >
+                    <h2 class="text-4xl font-display text-primary-300 pb-8">
                         Languages
                     </h2>
 
-                    <div class="grid grid-cols-2 pb-8 text-secondary-900">
+                    <div class="grid grid-cols-2 pb-8">
                         <div>
-                            <p class="font-display text-xl">English</p>
-                            <p class="text-sm">Advanced</p>
+                            <p class="font-display text-xl text-white">
+                                English
+                            </p>
+                            <p class="text-sm text-gray-400">Advanced</p>
                         </div>
                         <div>
-                            <p class="font-display text-xl">Portuguese</p>
-                            <p class="text-sm">Native</p>
+                            <p class="font-display text-xl text-white">
+                                Portuguese
+                            </p>
+                            <p class="text-sm text-gray-400">Native</p>
                         </div>
                     </div>
 
-                    <h2
-                        class="ml-8 text-4xl font-display text-secondary-900 pb-8"
-                    >
+                    <h2 class="text-4xl font-display text-primary-300 pb-8">
                         Hobbies & Interests
                     </h2>
 
@@ -316,48 +302,103 @@ import VueIcon from "@/components/icons/VueIcon.astro";
                         class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"
                     >
                         <div
-                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                            class="pl-2 md:pl-0 rounded bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
                         >
                             <div
-                                class="bg-primary-300 size-16 flex items-center justify-center"
+                                class="size-16 flex items-center justify-center"
                             >
                                 <RunningFootIcon />
                             </div>
-                            <p class="text-sm lg:pt-2">Running/Gym</p>
+                            <p class="text-sm lg:pt-1 mb-1">Running/Gym</p>
                         </div>
                         <div
-                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                            class="pl-2 md:pl-0 bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
                         >
                             <div
-                                class="bg-primary-300 size-16 flex items-center justify-center"
+                                class="size-16 flex items-center justify-center"
                             >
                                 <CameraIcon />
                             </div>
-                            <p class="text-sm lg:pt-2">Photography</p>
+                            <p class="text-sm lg:pt-1 mb-1">Photography</p>
                         </div>
                         <div
-                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                            class="pl-2 md:pl-0 bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
                         >
                             <div
-                                class="bg-primary-300 size-16 flex items-center justify-center"
+                                class="size-16 flex items-center justify-center"
                             >
                                 <ConsoleIcon />
                             </div>
-                            <p class="text-sm lg:pt-2">Play games</p>
+                            <p class="text-sm lg:pt-1 mb-1">Play games</p>
                         </div>
                         <div
-                            class="pl-2 md:pl-0 bg-secondary-900 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
+                            class="pl-2 md:pl-0 bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
                         >
                             <div
-                                class="bg-primary-300 size-16 flex items-center justify-center"
+                                class="size-16 flex items-center justify-center"
                             >
                                 <DiscoBallIcon />
                             </div>
-                            <p class="text-sm lg:pt-2">DJing</p>
+                            <p class="text-sm lg:pt-1 mb-1">DJing</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <script>
+        const card = document.getElementById("picture-card");
+        const rocky = document.getElementById("rocky-egg");
+
+        if (card && rocky) {
+            const phases = [
+                { duration: 500, stay: 2000 },
+                { duration: 3000, stay: 2000 },
+                { duration: 100, stay: 300 },
+            ];
+            let clicks = 0;
+            let phase = 0;
+            let busy = false;
+
+            card.addEventListener("click", () => {
+                if (busy) return;
+                clicks++;
+                if (clicks < 5) return;
+                clicks = 0;
+                busy = true;
+
+                const cfg = phases[phase];
+                phase = (phase + 1) % phases.length;
+
+                const total = cfg.duration * 2 + cfg.stay;
+                const inEnd = cfg.duration / total;
+                const stayMid = (cfg.duration + cfg.stay / 2) / total;
+                const stayEnd = (cfg.duration + cfg.stay) / total;
+
+                const animation = rocky.animate(
+                    [
+                        { transform: "translateX(0) rotate(0deg)", offset: 0 },
+                        {
+                            transform: "translateX(80%) rotate(15deg)",
+                            offset: inEnd,
+                        },
+                        {
+                            transform: "translateX(80%) rotate(-10deg)",
+                            offset: stayMid,
+                        },
+                        {
+                            transform: "translateX(80%) rotate(15deg)",
+                            offset: stayEnd,
+                        },
+                        { transform: "translateX(0) rotate(0deg)", offset: 1 },
+                    ],
+                    { duration: total, easing: "ease-out" },
+                );
+                animation.onfinish = () => {
+                    busy = false;
+                };
+            });
+        }
+    </script>
 </Layout>

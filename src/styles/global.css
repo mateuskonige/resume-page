@@ -6,8 +6,33 @@
     --color-secondary-900: #34314e;
     /* fonts */
     --font-display: "Aclonica", "sans-serif"; 
-    --font-sans: "Montserrat", "sans-serif";
+    --font-sans: "Inter", "sans-serif";
   }
+
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    html.lenis,
+    html.lenis body {
+        height: auto;
+    }
+
+    .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+        overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+        overflow: clip;
+    }
+}
 
 @layer utilities {
     .stroke {
