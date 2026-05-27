@@ -63,7 +63,7 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                 <div class="relative">
                     <img
                         id="rocky-egg"
-                        class="w-44 h-44 absolute bottom-15 right-14 -z-10 pointer-events-none"
+                        class="w-44 h-44 fixed -left-38 bottom-2 z-40 cursor-pointer md:absolute md:left-auto md:bottom-15 md:right-14 md:-z-10 md:cursor-auto md:pointer-events-none"
                         src="/rocky.png"
                         alt="Amaze amaze amaze!"
                     />
@@ -143,7 +143,7 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                         >
                             <div class="relative">
                                 <h2
-                                    class="ml-8 text-4xl font-display text-primary-300 pb-8"
+                                    class="lg:ml-8 text-4xl font-display text-primary-300 pb-8"
                                 >
                                     Experience
                                 </h2>
@@ -350,26 +350,26 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
     <script>
         const card = document.getElementById("picture-card");
         const rocky = document.getElementById("rocky-egg");
+        const mql = window.matchMedia("(min-width: 768px)");
 
-        if (card && rocky) {
-            const phases = [
+        if (rocky) {
+            const desktopPhases = [
                 { duration: 500, stay: 2000 },
                 { duration: 3000, stay: 2000 },
                 { duration: 100, stay: 300 },
             ];
+            const mobilePhases = [
+                { duration: 600, stay: 2000 },
+                { duration: 2500, stay: 2000 },
+            ];
             let clicks = 0;
-            let phase = 0;
+            let desktopPhase = 0;
+            let mobilePhase = 0;
             let busy = false;
 
-            card.addEventListener("click", () => {
+            const play = (cfg, keyframes) => {
                 if (busy) return;
-                clicks++;
-                if (clicks < 5) return;
-                clicks = 0;
                 busy = true;
-
-                const cfg = phases[phase];
-                phase = (phase + 1) % phases.length;
 
                 const total = cfg.duration * 2 + cfg.stay;
                 const inEnd = cfg.duration / total;
@@ -377,27 +377,57 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                 const stayEnd = (cfg.duration + cfg.stay) / total;
 
                 const animation = rocky.animate(
-                    [
-                        { transform: "translateX(0) rotate(0deg)", offset: 0 },
-                        {
-                            transform: "translateX(80%) rotate(15deg)",
-                            offset: inEnd,
-                        },
-                        {
-                            transform: "translateX(80%) rotate(-10deg)",
-                            offset: stayMid,
-                        },
-                        {
-                            transform: "translateX(80%) rotate(15deg)",
-                            offset: stayEnd,
-                        },
-                        { transform: "translateX(0) rotate(0deg)", offset: 1 },
-                    ],
+                    keyframes(inEnd, stayMid, stayEnd),
                     { duration: total, easing: "ease-out" },
                 );
                 animation.onfinish = () => {
                     busy = false;
                 };
+            };
+
+            const desktopKeyframes = (inEnd, stayMid, stayEnd) => [
+                { transform: "translateX(0) rotate(0deg)", offset: 0 },
+                { transform: "translateX(80%) rotate(15deg)", offset: inEnd },
+                {
+                    transform: "translateX(80%) rotate(-10deg)",
+                    offset: stayMid,
+                },
+                { transform: "translateX(80%) rotate(15deg)", offset: stayEnd },
+                { transform: "translateX(0) rotate(0deg)", offset: 1 },
+            ];
+
+            const mobileKeyframes = (inEnd, stayMid, stayEnd) => [
+                { transform: "translateX(0) rotate(0deg)", offset: 0 },
+                { transform: "translateX(8rem) rotate(-15deg)", offset: inEnd },
+                {
+                    transform: "translateX(8rem) rotate(10deg)",
+                    offset: stayMid,
+                },
+                {
+                    transform: "translateX(8rem) rotate(-15deg)",
+                    offset: stayEnd,
+                },
+                { transform: "translateX(0) rotate(0deg)", offset: 1 },
+            ];
+
+            if (card) {
+                card.addEventListener("click", () => {
+                    if (!mql.matches) return;
+                    if (busy) return;
+                    clicks++;
+                    if (clicks < 5) return;
+                    clicks = 0;
+                    const cfg = desktopPhases[desktopPhase];
+                    desktopPhase = (desktopPhase + 1) % desktopPhases.length;
+                    play(cfg, desktopKeyframes);
+                });
+            }
+
+            rocky.addEventListener("click", () => {
+                if (mql.matches) return;
+                const cfg = mobilePhases[mobilePhase];
+                mobilePhase = (mobilePhase + 1) % mobilePhases.length;
+                play(cfg, mobileKeyframes);
             });
         }
     </script>
