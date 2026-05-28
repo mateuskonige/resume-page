@@ -30,7 +30,7 @@ import HobbyItem from "@/components/HobbyItem.astro";
             >
                 <div class="space-y-6">
                     <h1
-                        class="text-[5.5rem] leading-[1] font-display text-neutral-50"
+                        class="overflow-hidden text-[5.5rem] leading-[1] font-display text-neutral-50"
                     >
                         Hello,<br /> I'm <span
                             id="fuzzy-wrapper"
@@ -41,8 +41,8 @@ import HobbyItem from "@/components/HobbyItem.astro";
                             ><canvas
                                 id="fuzzy-canvas"
                                 aria-hidden="true"
-                                class="absolute pointer-events-none"></canvas><span
-                                class="sr-only">a.k.a. Reis</span
+                                class="absolute pointer-events-none"
+                            ></canvas><span class="sr-only">a.k.a. Reis</span
                             ></span
                         >
                     </h1>
@@ -485,8 +485,7 @@ import HobbyItem from "@/components/HobbyItem.astro";
 
                     const frame = () => {
                         ctx.clearRect(0, 0, W, H);
-                        const source =
-                            mode === "glitch" ? offSwap : offNormal;
+                        const source = mode === "glitch" ? offSwap : offNormal;
                         const amp = mode === "glitch" ? 14 : 3;
                         for (let y = 0; y < H; y++) {
                             const dx = (Math.random() - 0.5) * amp;
