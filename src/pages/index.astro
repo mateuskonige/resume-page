@@ -32,9 +32,19 @@ import HobbyItem from "@/components/HobbyItem.astro";
                     <h1
                         class="text-[5.5rem] leading-[1] font-display text-neutral-50"
                     >
-                        Hello,<br /> I'm <small class="text-[6px]">a.k.a.</small
+                        Hello,<br /> I'm <span
+                            id="fuzzy-wrapper"
+                            class="relative inline-block whitespace-nowrap align-baseline"
+                            ><span aria-hidden="true" class="invisible"
+                                ><small class="text-[6px]">a.k.a.</small>
+                                <span class="text-primary-300">Reis</span></span
+                            ><canvas
+                                id="fuzzy-canvas"
+                                aria-hidden="true"
+                                class="absolute pointer-events-none"></canvas><span
+                                class="sr-only">a.k.a. Reis</span
+                            ></span
                         >
-                        <span class="text-primary-300">Reis</span>
                     </h1>
                     <p class="text-lg text-neutral-300">
                         I'm a software engineer and a web developer. I love to
@@ -405,6 +415,122 @@ import HobbyItem from "@/components/HobbyItem.astro";
                 mobilePhase = (mobilePhase + 1) % mobilePhases.length;
                 play(cfg, mobileKeyframes);
             });
+        }
+
+        const fuzzyWrapper = document.getElementById("fuzzy-wrapper");
+        const fuzzyCanvas = document.getElementById("fuzzy-canvas");
+
+        if (fuzzyWrapper && fuzzyCanvas instanceof HTMLCanvasElement) {
+            const ctx = fuzzyCanvas.getContext("2d");
+
+            if (ctx) {
+                document.fonts.ready.then(() => {
+                    const FONT_LARGE = 88; // matches text-[5.5rem]
+                    const FONT_SMALL = 6; // matches text-[6px]
+                    const FONT_FAMILY = '"Aclonica", sans-serif';
+                    const COLOR_REIS = "#25fbad";
+                    const COLOR_AKA = "#fafafa";
+                    const PAD = 24; // displacement headroom around the text
+
+                    ctx.font = `${FONT_SMALL}px ${FONT_FAMILY}`;
+                    const akaWidth = ctx.measureText("a.k.a.").width;
+                    ctx.font = `${FONT_LARGE}px ${FONT_FAMILY}`;
+                    const reisWidth = ctx.measureText(" Reis").width;
+                    const mateusWidth = ctx.measureText("Mateus").width;
+
+                    const contentW = Math.ceil(
+                        Math.max(akaWidth + reisWidth, mateusWidth),
+                    );
+                    const W = contentW + PAD * 2;
+                    const H = FONT_LARGE + PAD * 2;
+
+                    fuzzyCanvas.width = W;
+                    fuzzyCanvas.height = H;
+                    fuzzyCanvas.style.width = `${W}px`;
+                    fuzzyCanvas.style.height = `${H}px`;
+                    fuzzyCanvas.style.left = `${-PAD}px`;
+                    fuzzyCanvas.style.top = `${-PAD}px`;
+
+                    const makeOff = () => {
+                        const c = document.createElement("canvas");
+                        c.width = W;
+                        c.height = H;
+                        return c;
+                    };
+                    const offNormal = makeOff();
+                    const offSwap = makeOff();
+                    const oN = offNormal.getContext("2d");
+                    const oS = offSwap.getContext("2d");
+                    if (!oN || !oS) return;
+
+                    // Baseline tuned to match the surrounding "I'm" text baseline
+                    const baselineY = PAD + FONT_LARGE * 0.85;
+
+                    oN.textBaseline = "alphabetic";
+                    oN.font = `${FONT_SMALL}px ${FONT_FAMILY}`;
+                    oN.fillStyle = COLOR_AKA;
+                    oN.fillText("a.k.a.", PAD, baselineY);
+                    oN.font = `${FONT_LARGE}px ${FONT_FAMILY}`;
+                    oN.fillStyle = COLOR_REIS;
+                    oN.fillText(" Reis", PAD + akaWidth, baselineY);
+
+                    oS.textBaseline = "alphabetic";
+                    oS.font = `${FONT_LARGE}px ${FONT_FAMILY}`;
+                    oS.fillStyle = COLOR_REIS;
+                    oS.fillText("Mateus", PAD, baselineY);
+
+                    let mode = "fuzzy"; // 'fuzzy' | 'glitch'
+                    const rand = (min, max) =>
+                        Math.random() * (max - min) + min;
+
+                    const frame = () => {
+                        ctx.clearRect(0, 0, W, H);
+                        const source =
+                            mode === "glitch" ? offSwap : offNormal;
+                        const amp = mode === "glitch" ? 14 : 3;
+                        for (let y = 0; y < H; y++) {
+                            const dx = (Math.random() - 0.5) * amp;
+                            ctx.drawImage(source, 0, y, W, 1, dx, y, W, 1);
+                        }
+                        if (mode === "glitch") {
+                            // Sliced slab displacement
+                            for (let i = 0; i < 3; i++) {
+                                const sy = Math.floor(rand(0, H - 10));
+                                const sh = Math.floor(rand(4, 22));
+                                const sdx = rand(-30, 30);
+                                ctx.drawImage(
+                                    source,
+                                    0,
+                                    sy,
+                                    W,
+                                    sh,
+                                    sdx,
+                                    sy,
+                                    W,
+                                    sh,
+                                );
+                            }
+                        }
+                        requestAnimationFrame(frame);
+                    };
+                    frame();
+
+                    const scheduleGlitch = () => {
+                        const wait = rand(2200, 4500);
+                        window.setTimeout(() => {
+                            mode = "glitch";
+                            window.setTimeout(
+                                () => {
+                                    mode = "fuzzy";
+                                    scheduleGlitch();
+                                },
+                                rand(140, 280),
+                            );
+                        }, wait);
+                    };
+                    scheduleGlitch();
+                });
+            }
         }
     </script>
 </Layout>
