@@ -13,12 +13,13 @@ import MapPinIcon from "@/components/icons/MapPinIcon.astro";
 import ReactIcon from "@/components/icons/ReactIcon.astro";
 import RunningFootIcon from "@/components/icons/RunningFootIcon.astro";
 import TailwindIcon from "@/components/icons/TailwindIcon.astro";
-import VueIcon from "@/components/icons/VueIcon.astro";
+import FlutterIcon from "@/components/icons/FlutterIcon.astro";
 import SkillPill from "@/components/SkillPill.astro";
 import GlassSurface from "@/components/GlassSurface.astro";
 import Layout from "@/layouts/Layout.astro";
 import GitHubIcon from "@/components/icons/GitHubIcon.astro";
 import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
+import HobbyItem from "@/components/HobbyItem.astro";
 ---
 
 <Layout>
@@ -45,7 +46,7 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                         class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2"
                     >
                         <a
-                            class="lg:w-fit flex items-center justify-center text-white px-6 py-3 bg-primary-300/10 border border-primary-300/20 shadow-lg shadow-primary-300/10 hover:ring-2 ring-primary-300 transition-all ease-in-out"
+                            class="lg:w-fit flex items-center justify-center text-white px-6 py-3 bg-primary-300/10 border border-primary-300/20 shadow-lg hover:shadow-xl shadow-primary-300/10 hover:shadow-primary-300/20 hover:ring-2 ring-primary-300 transition-all ease-in-out"
                             href="https://github.com/mateuskonige/"
                             target="_blank"
                         >
@@ -70,7 +71,7 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                     <div class="flex justify-center">
                         <div
                             id="picture-card"
-                            class="border border-primary-300/30 shadow-primary-300/30 w-full lg:w-96 h-[450px] lg:h-96 bg-[url('/picture.webp')] bg-cover bg-top shadow-2xl relative z-10 isolate"
+                            class="border border-primary-300/30 animate-shadow-pulse w-full lg:w-96 h-[450px] lg:h-96 bg-[url('/picture.webp')] bg-cover bg-top relative z-10 isolate"
                             style="background-size: 127%; background-position: top 0% left 42%;"
                         >
                             <span
@@ -213,8 +214,8 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                                 <CodingSkillsItem name="React">
                                     <ReactIcon />
                                 </CodingSkillsItem>
-                                <CodingSkillsItem name="Vue.js">
-                                    <VueIcon />
+                                <CodingSkillsItem name="Flutter">
+                                    <FlutterIcon />
                                 </CodingSkillsItem>
                                 <CodingSkillsItem name="Laravel">
                                     <LaravelIcon />
@@ -301,46 +302,21 @@ import BrazilFlagIcon from "@/components/icons/BrazilFlagIcon.astro";
                     <div
                         class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"
                     >
-                        <div
-                            class="pl-2 md:pl-0 rounded bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
-                        >
-                            <div
-                                class="size-16 flex items-center justify-center"
-                            >
-                                <RunningFootIcon />
-                            </div>
-                            <p class="text-sm lg:pt-1 mb-1">Running/Gym</p>
-                        </div>
-                        <div
-                            class="pl-2 md:pl-0 bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
-                        >
-                            <div
-                                class="size-16 flex items-center justify-center"
-                            >
-                                <CameraIcon />
-                            </div>
-                            <p class="text-sm lg:pt-1 mb-1">Photography</p>
-                        </div>
-                        <div
-                            class="pl-2 md:pl-0 bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
-                        >
-                            <div
-                                class="size-16 flex items-center justify-center"
-                            >
-                                <ConsoleIcon />
-                            </div>
-                            <p class="text-sm lg:pt-1 mb-1">Play games</p>
-                        </div>
-                        <div
-                            class="pl-2 md:pl-0 bg-neutral-900/30 border border-primary-300/30 shadow-xl shadow-primary-300/10 text-slate-50 py-2 flex space-x-4 md:space-x-0 md:flex-col items-center"
-                        >
-                            <div
-                                class="size-16 flex items-center justify-center"
-                            >
-                                <DiscoBallIcon />
-                            </div>
-                            <p class="text-sm lg:pt-1 mb-1">DJing</p>
-                        </div>
+                        <HobbyItem text="Running/Gym">
+                            <RunningFootIcon />
+                        </HobbyItem>
+
+                        <HobbyItem text="Photography">
+                            <CameraIcon />
+                        </HobbyItem>
+
+                        <HobbyItem text="Play games">
+                            <ConsoleIcon />
+                        </HobbyItem>
+
+                        <HobbyItem text="DJing">
+                            <DiscoBallIcon />
+                        </HobbyItem>
                     </div>
                 </div>
             </div>
