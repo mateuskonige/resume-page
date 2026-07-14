@@ -150,11 +150,13 @@ const config = JSON.stringify({
         opacity: 0;
         z-index: -1;
     }
+    /* Only Chromium reaches svg mode (see supportsSvgBackdrop), and Chromium has
+       no -webkit-backdrop-filter. Declaring the prefixed twin here is not just
+       dead — the CSS minifier merges the pair and keeps only the prefixed one,
+       which silently kills the effect. */
     .glass-surface[data-mode="svg"] {
         background: hsl(0 0% 0% / var(--glass-frost, 0));
         backdrop-filter: var(--filter-id) saturate(var(--glass-saturation, 1));
-        -webkit-backdrop-filter: var(--filter-id)
-            saturate(var(--glass-saturation, 1));
         box-shadow:
             0 0 2px 1px rgba(255, 255, 255, var(--glass-glow-sharp, 0.175))
                 inset,
@@ -170,11 +172,18 @@ const config = JSON.stringify({
     .glass-surface[data-mode="fallback"] {
         background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
-        -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
         border: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow:
             inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
             inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+    /* Safari < 16.4 only knows the prefixed property. Kept in its own at-rule so
+       the minifier cannot merge it back into the rule above and drop the
+       standard declaration. */
+    @supports (-webkit-backdrop-filter: blur(1px)) {
+        .glass-surface[data-mode="fallback"] {
+            -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.2);
+        }
     }
 </style>
 
