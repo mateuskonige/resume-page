@@ -263,7 +263,13 @@ void main() {
         let program: Program;
 
         function resize() {
-            renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
+            const width = ctn.offsetWidth;
+            const height = ctn.offsetHeight;
+            // The container is fixed/inset-0, but its box may not be laid out
+            // yet when this module first runs. Sizing to 0 leaves a blank
+            // canvas until a window resize; bail and let the observer re-fire.
+            if (width === 0 || height === 0) return;
+            renderer.setSize(width, height);
             if (program) {
                 program.uniforms.uResolution.value = new Color(
                     gl.canvas.width,
@@ -273,6 +279,10 @@ void main() {
             }
         }
         window.addEventListener("resize", resize, false);
+        // Fires once layout gives the container real dimensions, so the
+        // star-field paints on first load without needing a window resize.
+        const resizeObserver = new ResizeObserver(() => resize());
+        resizeObserver.observe(ctn);
         resize();
 
         const geometry = new Triangle(gl);
