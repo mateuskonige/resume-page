@@ -6,7 +6,7 @@
     --color-secondary-900: #34314e;
     /* fonts */
     --font-display: "Aclonica", "sans-serif";
-    --font-sans: "Ubuntu", "sans-serif";
+    --font-sans: "Space Grotesk", "sans-serif";
     /* animations */
     --animate-shadow-pulse: shadow-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
