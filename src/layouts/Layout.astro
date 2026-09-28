@@ -33,21 +33,13 @@ import "../styles/global.css";
             mouseRepulsion={false}
             class="fixed inset-0 z-0 pointer-events-none"
         />
-        <div class="relative z-10">
-            <nav class="sticky top-2 z-50 p-4 lg:p-6 max-w-6xl mx-auto">
-                <GlassSurface
-                    glow={0.1}
-                    borderRadius={35}
-                    borderWidth={0.07}
-                    brightness={75}
-                    opacity={1}
-                    blur={7}
-                    displace={2}
-                    backgroundOpacity={0.1}
-                    saturation={0.5}
-                    distortionScale={-50}
-                />
-                <div class="w-full flex items-center justify-between relative">
+        <nav
+            class="fixed top-0 left-0 right-0 max-h-20 w-full px-4 py-4 inset-0 z-50"
+        >
+            <div class="max-w-7xl mx-auto">
+                <div
+                    class="relative flex items-center justify-between gap-2 lg:gap-12 shadow-xl ring ring-white/10 backdrop-blur-sm pr-4 pl-6 py-5 lg:py-4 rounded-full"
+                >
                     <a href="/" class="flex items-center">
                         <BoltIcon fill="fill-primary-300" />
 
@@ -75,62 +67,62 @@ import "../styles/global.css";
                         <a
                             href="https://www.linkedin.com/in/mateuskonige/"
                             target="_blank"
-                            class="text-xs font-display lg:text-base rounded-full font-medium bg-primary-300 px-3 py-2"
+                            class="text-xs font-display lg:text-base rounded-full font-medium bg-primary-300 px-3 py-2 -ml-4"
                             >!</a
                         >
                     </div>
                 </div>
-            </nav>
+            </div>
+        </nav>
 
-            <slot />
+        <slot />
 
-            <footer class="relative p-6 text-slate-50">
-                <div
-                    class="container max-w-7xl mx-auto space-y-6 md:space-y-0 gap-6 block md:flex items-center justify-between relative"
-                >
-                    <div class="block md:flex items-center">
-                        <BoltIcon fill="fill-primary-300" />
-                    </div>
-
-                    <div>
-                        <p class="text-right" title="Did you find Rocky? :D">
-                            Made with ❤️ by <span class="font-display"
-                                >Mateus Reis</span
-                            >
-                        </p>
-                        <p class="text-[9px] text-right text-neutral-500">
-                            Design inspirations <a
-                                href="https://www.behance.net/gallery/168253091/CV-2023"
-                                target="_blank"
-                                class="font-display">Hannnb</a
-                            >, Component inspirations <a
-                                href="https://www.reactbits.dev/"
-                                target="_blank"
-                                class="font-display">Reactbits</a
-                            >
-                        </p>
-                    </div>
+        <footer class="relative p-6 text-slate-50">
+            <div
+                class="container max-w-7xl mx-auto space-y-6 md:space-y-0 gap-6 block md:flex items-center justify-between relative"
+            >
+                <div class="block md:flex items-center">
+                    <BoltIcon fill="fill-primary-300" />
                 </div>
-            </footer>
-        </div>
 
-        <script>
-            import Lenis from "lenis";
-
-            const lenis = new Lenis({
-                duration: 1,
-                easing: (t) => 1 - Math.pow(1 - t, 3),
-                smoothWheel: true,
-            });
-
-            function raf(time: number) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-
-            requestAnimationFrame(raf);
-        </script>
+                <div>
+                    <p class="text-right" title="Did you find Rocky? :D">
+                        Made with ❤️ by <span class="font-display"
+                            >Mateus Reis</span
+                        >
+                    </p>
+                    <p class="text-[9px] text-right text-neutral-500">
+                        Design inspirations <a
+                            href="https://www.behance.net/gallery/168253091/CV-2023"
+                            target="_blank"
+                            class="font-display">Hannnb</a
+                        >, Component inspirations <a
+                            href="https://www.reactbits.dev/"
+                            target="_blank"
+                            class="font-display">Reactbits</a
+                        >
+                    </p>
+                </div>
+            </div>
+        </footer>
     </body>
+
+    <script>
+        import Lenis from "lenis";
+
+        const lenis = new Lenis({
+            duration: 1,
+            easing: (t) => 1 - Math.pow(1 - t, 3),
+            smoothWheel: true,
+        });
+
+        function raf(time: number) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+    </script>
 </html>
 
 <style>
