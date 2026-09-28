@@ -56,7 +56,11 @@ const config = JSON.stringify({
 });
 ---
 
-<div class:list={["galaxy-container", className]} data-galaxy-config={config}>
+<div
+    class:list={["galaxy-container", className]}
+    data-galaxy-config={config}
+    aria-hidden="true"
+>
 </div>
 
 <style>
@@ -64,6 +68,8 @@ const config = JSON.stringify({
         width: 100%;
         height: 100%;
         overflow: hidden;
+        /* Keeps the canvas out of the rest of the page's layout/paint work. */
+        contain: layout paint style;
     }
     .galaxy-container canvas {
         display: block;
@@ -111,7 +117,6 @@ uniform bool uTransparent;
 
 varying vec2 vUv;
 
-#define NUM_LAYER 4.0
 #define STAR_COLOR_CUTOFF 0.2
 #define MAT45 mat2(0.7071, -0.7071, 0.7071, 0.7071)
 #define PERIOD 3.0
@@ -136,20 +141,27 @@ float trisn(float x) {
   return 2.0 * (1.0 - smoothstep(0.0, 1.0, abs(2.0 * t - 1.0))) - 1.0;
 }
 
+#ifndef GRAYSCALE_STARS
 vec3 hsv2rgb(vec3 c) {
   vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
   vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
+#endif
 
-float Star(vec2 uv, float flare) {
-  float d = length(uv);
-  float m = (0.05 * uGlowIntensity) / d;
-  float rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
-  m += rays * flare * uGlowIntensity;
-  uv *= MAT45;
-  rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
-  m += rays * 0.3 * flare * uGlowIntensity;
+// d comes in as a parameter because the caller already needs the squared
+// distance to cull far cells, so there is no reason to recompute a length.
+float Star(vec2 uv, float flare, float d) {
+  float m = (0.05 * uGlowIntensity) / max(d, 0.0001);
+  // Only the largest ~10% of stars get flare rays, and these four extra
+  // smoothsteps are the priciest part of the function.
+  if (flare > 0.001) {
+    float rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+    m += rays * flare * uGlowIntensity;
+    uv *= MAT45;
+    rays = smoothstep(0.0, 1.0, 1.0 - abs(uv.x * uv.y * 1000.0));
+    m += rays * 0.3 * flare * uGlowIntensity;
+  }
   m *= smoothstep(1.0, 0.2, d);
   return m;
 }
@@ -163,14 +175,31 @@ vec3 StarLayer(vec2 uv) {
   for (int y = -1; y <= 1; y++) {
     for (int x = -1; x <= 1; x++) {
       vec2 offset = vec2(float(x), float(y));
-      vec2 si = id + vec2(float(x), float(y));
+      vec2 si = id + offset;
       float seed = Hash21(si);
+
+      vec2 pad = vec2(tris(seed * 34.0 + uTime * uSpeed / 10.0), tris(seed * 38.0 + uTime * uSpeed / 30.0)) - 0.5;
+
+      vec2 p = gv - offset - pad;
+      // Star() ends in smoothstep(1.0, 0.2, d), which is exactly 0 from
+      // d >= 1.0 outward, so a cell that far away cannot contribute. Bail
+      // before the color and flare math instead of multiplying it by zero.
+      float d2 = dot(p, p);
+      if (d2 >= 1.0) continue;
+
       float size = fract(seed * 345.32);
       float glossLocal = tri(uStarSpeed / (PERIOD * seed + 1.0));
       float flareSize = smoothstep(0.9, 1.0, size) * glossLocal;
 
       float red = smoothstep(STAR_COLOR_CUTOFF, 1.0, Hash21(si + 1.0)) + STAR_COLOR_CUTOFF;
       float blu = smoothstep(STAR_COLOR_CUTOFF, 1.0, Hash21(si + 3.0)) + STAR_COLOR_CUTOFF;
+
+#ifdef GRAYSCALE_STARS
+      // At uSaturation == 0 the HSV round-trip below collapses to the value
+      // channel, which is max(red, blu) because green is always the smaller
+      // of the two. Saves an atan, a dot, a length and hsv2rgb per star.
+      vec3 base = vec3(max(red, blu));
+#else
       float grn = min(red, blu) * seed;
       vec3 base = vec3(red, grn, blu);
 
@@ -179,17 +208,15 @@ vec3 StarLayer(vec2 uv) {
       float sat = length(base - vec3(dot(base, vec3(0.299, 0.587, 0.114)))) * uSaturation;
       float val = max(max(base.r, base.g), base.b);
       base = hsv2rgb(vec3(hue, sat, val));
+#endif
 
-      vec2 pad = vec2(tris(seed * 34.0 + uTime * uSpeed / 10.0), tris(seed * 38.0 + uTime * uSpeed / 30.0)) - 0.5;
-
-      float star = Star(gv - offset - pad, flareSize);
-      vec3 color = base;
+      float star = Star(p, flareSize, sqrt(d2));
 
       float twinkle = trisn(uTime * uSpeed + seed * 6.2831) * 0.5 + 1.0;
       twinkle = mix(1.0, twinkle, uTwinkleIntensity);
       star *= twinkle;
 
-      col += star * size * color;
+      col += star * size * base;
     }
   }
 
@@ -199,8 +226,6 @@ vec3 StarLayer(vec2 uv) {
 void main() {
   vec2 focalPx = uFocal * uResolution.xy;
   vec2 uv = (vUv * uResolution.xy - focalPx) / uResolution.y;
-
-  vec2 mouseNorm = uMouse - vec2(0.5);
 
   if (uAutoCenterRepulsion > 0.0) {
     vec2 centerUV = vec2(0.0, 0.0);
@@ -213,7 +238,7 @@ void main() {
     vec2 repulsion = normalize(uv - mousePosUV) * (uRepulsionStrength / (mouseDist + 0.1));
     uv += repulsion * 0.05 * uMouseActiveFactor;
   } else {
-    vec2 mouseOffset = mouseNorm * 0.1 * uMouseActiveFactor;
+    vec2 mouseOffset = (uMouse - vec2(0.5)) * 0.1 * uMouseActiveFactor;
     uv += mouseOffset;
   }
 
@@ -227,8 +252,11 @@ void main() {
 
   for (float i = 0.0; i < 1.0; i += 1.0 / NUM_LAYER) {
     float depth = fract(i + uStarSpeed * uSpeed);
-    float scale = mix(20.0 * uDensity, 0.5 * uDensity, depth);
     float fade = depth * smoothstep(1.0, 0.9, depth);
+    // fade depends only on uniforms, so this branch resolves the same way
+    // for every pixel: whichever layer has just wrapped is skipped whole.
+    if (fade < 0.002) continue;
+    float scale = mix(20.0 * uDensity, 0.5 * uDensity, depth);
     col += StarLayer(uv * scale + i * 453.32) * fade;
   }
 
@@ -243,12 +271,42 @@ void main() {
 }
 `;
 
+    function buildFragmentShader(saturation: number, layers: number) {
+        const defines = [`#define NUM_LAYER ${layers.toFixed(1)}`];
+        if (Math.abs(saturation) < 0.001) {
+            defines.push("#define GRAYSCALE_STARS");
+        }
+        return `${defines.join("\n")}\n${fragmentShader}`;
+    }
+
     function initGalaxy(ctn: HTMLElement) {
+        if (ctn.dataset.galaxyReady === "true") return;
+        ctn.dataset.galaxyReady = "true";
+
         const cfg = JSON.parse(ctn.dataset.galaxyConfig || "{}");
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        // The field is a soft glow, so it survives rendering below native
+        // resolution far better than it survives dropped frames. Fragment
+        // cost scales with the pixel count, so this is the biggest lever.
+        const targetScale = Math.min(window.devicePixelRatio || 1, 1);
+        const minScale = 0.45;
+        // The first frames render nearly free, purely to learn how fast this
+        // display actually delivers frames. See sampleQuality().
+        const calibrationScale = 0.3;
+        let renderScale = reduceMotion ? targetScale : calibrationScale;
+        let scaleCeiling = targetScale;
 
         const renderer = new Renderer({
             alpha: cfg.transparent,
             premultipliedAlpha: false,
+            dpr: renderScale,
+            antialias: false,
+            depth: false,
+            stencil: false,
+            powerPreference: "high-performance",
         });
         const gl = renderer.gl;
 
@@ -260,44 +318,17 @@ void main() {
             gl.clearColor(0, 0, 0, 1);
         }
 
-        let program: Program;
-
-        function resize() {
-            const width = ctn.offsetWidth;
-            const height = ctn.offsetHeight;
-            // The container is fixed/inset-0, but its box may not be laid out
-            // yet when this module first runs. Sizing to 0 leaves a blank
-            // canvas until a window resize; bail and let the observer re-fire.
-            if (width === 0 || height === 0) return;
-            renderer.setSize(width, height);
-            if (program) {
-                program.uniforms.uResolution.value = new Color(
-                    gl.canvas.width,
-                    gl.canvas.height,
-                    gl.canvas.width / gl.canvas.height,
-                );
-            }
-        }
-        window.addEventListener("resize", resize, false);
-        // Fires once layout gives the container real dimensions, so the
-        // star-field paints on first load without needing a window resize.
-        const resizeObserver = new ResizeObserver(() => resize());
-        resizeObserver.observe(ctn);
-        resize();
+        // One layer fewer on phones: the field is denser per pixel there and
+        // the GPUs are the weakest, and the dropped layer is the faintest.
+        const layers = window.matchMedia("(max-width: 640px)").matches ? 3 : 4;
 
         const geometry = new Triangle(gl);
-        program = new Program(gl, {
+        const program = new Program(gl, {
             vertex: vertexShader,
-            fragment: fragmentShader,
+            fragment: buildFragmentShader(cfg.saturation, layers),
             uniforms: {
                 uTime: { value: 0 },
-                uResolution: {
-                    value: new Color(
-                        gl.canvas.width,
-                        gl.canvas.height,
-                        gl.canvas.width / gl.canvas.height,
-                    ),
-                },
+                uResolution: { value: new Color(1, 1, 1) },
                 uFocal: { value: new Float32Array(cfg.focal) },
                 uRotation: { value: new Float32Array(cfg.rotation) },
                 uStarSpeed: { value: cfg.starSpeed },
@@ -320,42 +351,223 @@ void main() {
         const mesh = new Mesh(gl, { geometry, program });
         ctn.appendChild(gl.canvas);
 
+        let rect = ctn.getBoundingClientRect();
+        let sized = false;
+        let running = false;
+
+        function applySize() {
+            const width = ctn.offsetWidth;
+            const height = ctn.offsetHeight;
+            // The container is fixed/inset-0, but its box may not be laid out
+            // yet when this module first runs. Sizing to 0 leaves a blank
+            // canvas until a window resize; bail and let the observer re-fire.
+            if (width === 0 || height === 0) return;
+            renderer.dpr = renderScale;
+            renderer.setSize(width, height);
+            const res = program.uniforms.uResolution.value;
+            res.r = gl.canvas.width;
+            res.g = gl.canvas.height;
+            res.b = gl.canvas.width / gl.canvas.height;
+            rect = ctn.getBoundingClientRect();
+            sized = true;
+        }
+
+        // Both resize events and the observer fire in bursts, and every
+        // setSize reallocates the drawing buffer. Coalesce to one per frame.
+        let resizePending = false;
+        function requestResize() {
+            if (resizePending) return;
+            resizePending = true;
+            requestAnimationFrame(() => {
+                resizePending = false;
+                applySize();
+                if (!running) renderFrame();
+            });
+        }
+
+        window.addEventListener("resize", requestResize, { passive: true });
+        // Fires once layout gives the container real dimensions, so the
+        // star-field paints on first load without needing a window resize.
+        const resizeObserver = new ResizeObserver(requestResize);
+        resizeObserver.observe(ctn);
+        applySize();
+
         const targetMouse = { x: 0.5, y: 0.5 };
         const smoothMouse = { x: 0.5, y: 0.5 };
         let targetActive = 0.0;
         let smoothActive = 0.0;
 
-        function update(t: number) {
-            requestAnimationFrame(update);
-            program.uniforms.uTime.value = t * 0.001;
-            program.uniforms.uStarSpeed.value =
-                (t * 0.001 * cfg.starSpeed) / 10.0;
+        // Our own clock rather than the rAF timestamp: it can be paused while
+        // the field is off-screen without the stars jumping on resume, and
+        // per-frame deltas are clamped so a GC hitch does not teleport them.
+        let elapsed = 0;
+        let lastFrameTime = 0;
+        let rafId = 0;
+        let pageVisible = !document.hidden;
+        let onScreen = true;
 
-            const lerp = 0.05;
-            smoothMouse.x += (targetMouse.x - smoothMouse.x) * lerp;
-            smoothMouse.y += (targetMouse.y - smoothMouse.y) * lerp;
-            smoothActive += (targetActive - smoothActive) * lerp;
+        let frameAcc = 0;
+        let frameCount = 0;
+        let goodStreak = 0;
+        let badStreak = 0;
+        // Frame interval this display actually delivers. Absolute thresholds
+        // are useless here: a browser that throttles rAF (backgrounded or
+        // occluded window, power saver, some mobile browsers) hands out 50ms
+        // frames no matter how cheap the shader is, and reading that as "too
+        // slow" would drop the resolution permanently for no reason. Measured
+        // while rendering at calibrationScale, where the GPU cost is noise.
+        let frameBudget = 0;
+        const calibrationSamples: number[] = [];
 
+        function median(values: number[]) {
+            const sorted = [...values].sort((a, b) => a - b);
+            return sorted[Math.floor(sorted.length / 2)];
+        }
+
+        function calibrate(dt: number) {
+            // Reject implausible samples: a page-load stall, or the near-zero
+            // delta of the first frame after the loop resumes.
+            if (dt < 0.002 || dt > 0.099) return;
+            calibrationSamples.push(dt);
+            if (calibrationSamples.length < 10) return;
+            frameBudget = median(calibrationSamples);
+            renderScale = targetScale;
+            frameAcc = 0;
+            frameCount = 0;
+            applySize();
+        }
+
+        function sampleQuality(dt: number) {
+            if (frameBudget === 0) {
+                calibrate(dt);
+                return;
+            }
+
+            frameAcc += dt;
+            frameCount++;
+            if (frameCount < 45) return;
+            const avg = frameAcc / frameCount;
+            frameAcc = 0;
+            frameCount = 0;
+
+            if (avg > frameBudget * 1.4) {
+                // Missing the display's own deadline, so this is real work,
+                // not throttling. Two windows in a row to ignore one-off
+                // spikes from font swaps, images decoding and the like.
+                badStreak++;
+                goodStreak = 0;
+                if (badStreak >= 2 && renderScale > minScale) {
+                    // This resolution could not keep up; never return to it.
+                    scaleCeiling = renderScale;
+                    renderScale = Math.max(minScale, renderScale - 0.15);
+                    badStreak = 0;
+                    applySize();
+                }
+                return;
+            }
+
+            badStreak = 0;
+            if (avg < frameBudget * 1.1) {
+                goodStreak++;
+                if (goodStreak >= 3 && renderScale < scaleCeiling - 0.05) {
+                    renderScale = Math.min(
+                        scaleCeiling - 0.05,
+                        renderScale + 0.1,
+                    );
+                    goodStreak = 0;
+                    applySize();
+                }
+            } else {
+                goodStreak = 0;
+            }
+        }
+
+        function renderFrame() {
+            if (!sized) return;
+            program.uniforms.uTime.value = elapsed;
+            program.uniforms.uStarSpeed.value = (elapsed * cfg.starSpeed) / 10.0;
             program.uniforms.uMouse.value[0] = smoothMouse.x;
             program.uniforms.uMouse.value[1] = smoothMouse.y;
             program.uniforms.uMouseActiveFactor.value = smoothActive;
-
             renderer.render({ scene: mesh });
         }
-        requestAnimationFrame(update);
 
-        if (cfg.mouseInteraction) {
-            window.addEventListener("mousemove", (e: MouseEvent) => {
-                const rect = ctn.getBoundingClientRect();
-                targetMouse.x = (e.clientX - rect.left) / rect.width;
-                targetMouse.y =
-                    1.0 - (e.clientY - rect.top) / rect.height;
-                targetActive = 1.0;
-            });
+        function update(t: number) {
+            rafId = requestAnimationFrame(update);
+
+            const dt = Math.min((t - lastFrameTime) * 0.001, 0.1);
+            lastFrameTime = t;
+            elapsed += dt;
+
+            // Frame-rate independent easing, so the parallax settles at the
+            // same speed on a 60Hz and on a 144Hz display.
+            const ease = 1 - Math.pow(0.001, dt);
+            smoothMouse.x += (targetMouse.x - smoothMouse.x) * ease;
+            smoothMouse.y += (targetMouse.y - smoothMouse.y) * ease;
+            smoothActive += (targetActive - smoothActive) * ease;
+
+            renderFrame();
+            sampleQuality(dt);
+        }
+
+        function start() {
+            if (running || reduceMotion || !pageVisible || !onScreen) return;
+            running = true;
+            frameAcc = 0;
+            frameCount = 0;
+            lastFrameTime = performance.now();
+            rafId = requestAnimationFrame(update);
+        }
+
+        function stop() {
+            if (!running) return;
+            running = false;
+            cancelAnimationFrame(rafId);
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            pageVisible = !document.hidden;
+            if (pageVisible) start();
+            else stop();
+        });
+
+        // Nothing to animate while the container is outside the viewport.
+        const visibilityObserver = new IntersectionObserver(
+            (entries) => {
+                onScreen = entries.some((entry) => entry.isIntersecting);
+                if (onScreen) start();
+                else stop();
+            },
+            { threshold: 0 },
+        );
+        visibilityObserver.observe(ctn);
+
+        if (cfg.mouseInteraction && !reduceMotion) {
+            // Store the raw pointer position only. Reading the container's
+            // rect in here would force a layout on every single mousemove;
+            // the cached rect is refreshed on resize instead.
+            window.addEventListener(
+                "mousemove",
+                (e: MouseEvent) => {
+                    if (rect.width === 0 || rect.height === 0) return;
+                    targetMouse.x = (e.clientX - rect.left) / rect.width;
+                    targetMouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
+                    targetActive = 1.0;
+                },
+                { passive: true },
+            );
             window.addEventListener("mouseout", () => {
                 targetActive = 0.0;
             });
         }
+
+        gl.canvas.addEventListener("webglcontextlost", (e) => {
+            e.preventDefault();
+            stop();
+        });
+
+        if (reduceMotion) renderFrame();
+        else start();
     }
 
     document
